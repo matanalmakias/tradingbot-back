@@ -8,11 +8,15 @@ import nodeEvents from "./nodeEvents/nodeEvents.js";
 import bodyParser from "body-parser";
 import { userRouter } from "./routes/user.js";
 import { coinsRouter } from "./routes/coins.js";
+import { fetchTopCoins } from "./functions/get/fetchTopCoins.js";
+import { dcaRouter } from "./routes/dca.js";
+import { positionRouter } from "./routes/position.js";
 // Start the cron job
 const app = express();
 connect().catch((e) => {
   console.log(e);
 });
+
 app.use(
   cors({
     origin: "*",
@@ -29,6 +33,8 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use("/user", userRouter);
 app.use("/coins", coinsRouter);
+app.use("/dca", dcaRouter);
+app.use("/position", positionRouter);
 
 app.use(notFound);
 

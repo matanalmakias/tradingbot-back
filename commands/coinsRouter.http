@@ -1,2 +1,25 @@
 ##########
-GET http://localhost:3001/coins/getTopCoinsByRSI?limit=10&period=14&interval=60&timeframe=24h
+GET http://localhost:3001/coins/getTopCoinsByRSI?limit=10&period=14&interval=30&timeframe=48h&category=linear
+
+###################
+POST http://localhost:3001/position/startPosition
+Content-Type: application/json
+
+{
+  "symbol": "1000PEPEUSDT",
+  "side": "Buy",
+  "quantity": 800,
+  "stepPercentage": 3
+}
+
+###################
+POST http://localhost:3001/position/startPosition
+Content-Type: application/json
+
+{
+  "symbol": "XRPUSDT",
+  "side": "Buy",
+  "quantity": 11,
+  "stepPercentage": 3
+}
+

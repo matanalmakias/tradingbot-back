@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import dbConfig from "./config/db.config.js";
-import { defaultContent } from "../functions/defaultContent.js";
+import { defaultContent } from "../functions/utils/defaultContent.js";
 
 const { HOST, DB, PORT, ROLES } = dbConfig;
 

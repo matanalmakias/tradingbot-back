@@ -1,16 +1,20 @@
 ##########
-GET http://localhost:3001/coins/getTopCoinsByRSI?limit=10&period=14&interval=30&timeframe=48h&category=linear
+GET http://localhost:3001/coins/getTopCoinsByRSI?limit=15&period=12&interval=120&timeframe=168h&category=spot
 
-###################
+##########
+GET http://localhost:3001/coins/getTopCoinsByRSI2
+
+###############
 POST http://localhost:3001/position/startPosition
 Content-Type: application/json
 
 {
-  "symbol": "1000PEPEUSDT",
+  "symbol": "LDOUSDT",
   "side": "Buy",
-  "quantity": 800,
-  "stepPercentage": 3
+  "quantity": "3.4",
+  "stepPercentage": 0.02
 }
+
 
 ###################
 POST http://localhost:3001/position/startPosition

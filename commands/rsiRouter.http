@@ -1,0 +1,21 @@
+###############
+POST http://localhost:3001/rsi/getRSIForSymbols
+Content-Type: application/json
+
+{
+  "symbols": ["BTCUSDT", "ETHUSDT",
+   "XRPUSDT","DOGEUSDT","ENAUSDT",
+   "LINKUSDT","1000PEPEUSDT",
+   "SUIUSDT","ADAUSDT","AVAXUSDT",
+   "LTCUSDT","DOTUSDT","HBARUSDT",
+   "SHIB1000USDT","ZEUSUSDT",
+   "UNIUSDT","NEARUSDT","PNUTUSDT",
+   "LDOUSDT","SANDUSDT","BNBUSDT",
+   "XLMUSDT","COWUSDT","KAIAUSDT",
+   "BCHUSDT","TRXUSDT","ETCUSDT",
+   "INJUSDT","TAOUSDT","KASUSDT",
+   "CTCUSDT","BANUSDT"],
+  "period": 200,
+  "interval": 30
+}
+

@@ -8,9 +8,10 @@ import nodeEvents from "./nodeEvents/nodeEvents.js";
 import bodyParser from "body-parser";
 import { userRouter } from "./routes/user.js";
 import { coinsRouter } from "./routes/coins.js";
-import { fetchTopCoins } from "./functions/get/fetchTopCoins.js";
 import { dcaRouter } from "./routes/dca.js";
 import { positionRouter } from "./routes/position.js";
+import { rsiRouter } from "./routes/rsi.js";
+import { orderRouter } from "./routes/order.js";
 // Start the cron job
 const app = express();
 connect().catch((e) => {
@@ -35,6 +36,8 @@ app.use("/user", userRouter);
 app.use("/coins", coinsRouter);
 app.use("/dca", dcaRouter);
 app.use("/position", positionRouter);
+app.use("/rsi", rsiRouter);
+app.use("/order", orderRouter);
 
 app.use(notFound);
 

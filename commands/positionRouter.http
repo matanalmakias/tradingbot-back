@@ -1,0 +1,12 @@
+
+###############
+POST http://localhost:3001/position/startPosition
+Content-Type: application/json
+
+{
+  "symbol": "COWUSDT",
+  "side": "Buy",
+  "quantity": "0.5",
+  "stepPercentage": 0.5
+}
+

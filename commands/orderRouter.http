@@ -1,0 +1,9 @@
+POST http://localhost:3001/order/placeOrder
+Content-Type: application/json
+
+{
+  "symbol": "LDOUSDT",
+  "side": "Buy",
+  "quantity": 3.4,
+  "price": null
+}

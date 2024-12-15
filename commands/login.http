@@ -1,0 +1,17 @@
+###########
+POST http://localhost:3001/user/login/1
+Content-Type: application/json
+
+{
+        "phone":"0526757706"
+}
+
+###########
+POST http://localhost:3001/user/login/2
+Content-Type: application/json
+
+{
+        "phone":"0526757706",
+        "verificationCode":854172
+}
+

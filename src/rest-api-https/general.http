@@ -1,0 +1,13 @@
+
+###
+POST http://localhost:3001/slot/takeSlot
+Content-Type: application/json
+Authorization: Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0M2FhYjI0MmQ1ODU4YzcwN2MzY2VmZSIsImlhdCI6MTY4MjM1NjkzMCwiZXhwIjoxNjg0OTQ4OTMwfQ.A5MyJihZkeZQVcZprYvxacpk1eyUF6B9l_oOn8t73VU
+
+{
+  "date": "12-08-2023",
+  "hour": {
+    "startTime": "10:00",
+    "endTime": "14:00"
+  }
+}

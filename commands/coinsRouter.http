@@ -1,0 +1,2 @@
+##########
+GET http://localhost:3001/coins/getTopCoinsByRSI?limit=10&period=14&interval=60&timeframe=24h

@@ -1,0 +1,14 @@
+###########
+POST http://localhost:3001/order/create
+Content-Type: application/json
+
+
+    {
+        "name": "Matan",
+        "phone": "0526757706",
+        "address": {
+            "city": "באר שבע",
+            "street": "נשר 40"
+        }
+    }
+

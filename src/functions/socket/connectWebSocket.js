@@ -22,14 +22,13 @@ export const connectWebSocket = async (
     connection = new Connection({ symbol, initialPrice: null, buyCount: 0 });
     await connection.save();
   }
-  let { initialPrice } = connection;
+  let { initialPrice, isBusy } = connection;
 
   let lastDatabaseCheckTime = 0; // זמן הבדיקה האחרון מה-Database
   const databaseCheckInterval = 0.5 * 60 * 1000; // בדיקה כל 5 דקות (במילישניות)
 
   const percentageThreshold = 0.3; // סף אחוזים להבדל
   let lastOrderTime = 0;
-  let isBusy = false;
   const incrementPercent = 150; // אחוז ההגדלה (1.5%) בכל קנייה חוזרת
 
   async function getBuyQuantity(initialQty, round = true) {
@@ -135,9 +134,11 @@ export const connectWebSocket = async (
               console.log(`Initial price set to ${initialPrice}`);
             },
             () => isBusy,
-            (state) => {
+            async (state) => {
               isBusy = state;
               console.log(`isBusy set to: ${state}`);
+              connection.isBusy = state;
+              await connection.save();
             },
             () => lastOrderTime,
             (time) => {

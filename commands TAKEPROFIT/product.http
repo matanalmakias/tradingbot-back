@@ -1,0 +1,17 @@
+###########
+#########
+POST http://localhost:3001/product/create
+Content-Type: application/json
+
+{
+        "name":"asdasdasdas",
+        "desc":"asdasdasdas",
+        "price":122,
+        "imgUrls":["asdasdasdas"],
+        "category":"asdasdas",
+        "maxIngredients":2,
+        "ingredients":["asdasd","asdasd"],
+        "special" : { "isCase": false, "isHoliday": true, "isSale": false },
+        "sizes":{ "small": 122, "medium": 123, "large": 124 }
+}
+

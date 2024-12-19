@@ -1,0 +1,95 @@
+###############
+POST http://localhost:3003/takeProfit/startTakeProfit
+Content-Type: application/json
+
+{
+    "symbol": "CHILLGUYUSDT",
+    "category": "linear",
+    "roiTarget": 7,
+    "qtyToSell": "35",
+    "debounceTime": 23500
+  }
+
+###############
+POST http://localhost:3003/takeProfit/aiDecision
+Content-Type: application/json
+
+{
+    "symbol": "BTCUSDT",
+    "category": "linear",
+    "currentPrice": 110000,
+    "initialPrice": 106000,
+    "positionSize": 55
+  }
+
+###############
+POST http://localhost:3003/takeProfit/startTakeProfit
+Content-Type: application/json
+
+{
+    "symbol": "FTMUSDT",
+    "category": "linear",
+    "roiTarget": 5,
+    "qtyToSell": "4",
+    "debounceTime": 23500
+  }
+
+###############
+POST http://localhost:3003/takeProfit/startTakeProfit
+Content-Type: application/json
+
+{
+    "symbol": "ADAUSDT",
+    "category": "linear",
+    "roiTarget": 6,
+    "qtyToSell": "10",
+    "debounceTime": 23500
+  }
+
+###############
+POST http://localhost:3003/takeProfit/startTakeProfit
+Content-Type: application/json
+
+{
+    "symbol": "SHIB1000USDT",
+    "category": "linear",
+    "roiTarget": 6,
+    "qtyToSell": "250",
+    "debounceTime": 23500
+  }
+
+###############
+POST http://localhost:3003/takeProfit/startTakeProfit
+Content-Type: application/json
+
+{
+    "symbol": "DOGEUSDT",
+    "category": "linear",
+    "roiTarget": 6,
+    "qtyToSell": "13",
+    "debounceTime": 23500
+  }
+
+###############
+POST http://localhost:3003/takeProfit/startTakeProfit
+Content-Type: application/json
+
+{
+    "symbol": "POPCATUSDT",
+    "category": "linear",
+    "roiTarget": 6,
+    "qtyToSell": "6",
+    "debounceTime": 23500
+  }
+
+###############
+POST http://localhost:3003/takeProfit/startTakeProfit
+Content-Type: application/json
+
+{
+    "symbol": "KASUSDT",
+    "category": "linear",
+    "roiTarget": 6,
+    "qtyToSell": "40",
+    "debounceTime": 23500
+  }

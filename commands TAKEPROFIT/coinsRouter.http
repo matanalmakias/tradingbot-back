@@ -1,0 +1,29 @@
+##########
+GET http://localhost:3001/coins/getTopCoinsByRSI?limit=15&period=12&interval=120&timeframe=168h&category=spot
+
+##########
+GET http://localhost:3001/coins/getTopCoinsByRSI2
+
+###############
+POST http://localhost:3001/position/startPosition
+Content-Type: application/json
+
+{
+  "symbol": "LDOUSDT",
+  "side": "Buy",
+  "quantity": "3.4",
+  "stepPercentage": 0.02
+}
+
+
+###################
+POST http://localhost:3001/position/startPosition
+Content-Type: application/json
+
+{
+  "symbol": "XRPUSDT",
+  "side": "Buy",
+  "quantity": 11,
+  "stepPercentage": 3
+}
+

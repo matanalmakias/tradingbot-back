@@ -1,116 +1,175 @@
 import WebSocket from "ws";
-import { placeOrder } from "../place-order/placeOrder.js";
+import { processPrice } from "./proccessPrice.js";
+import { Connection } from "../../db/models/connection.js";
 
-export const connectWebSocket = (
+export const connectWebSocket = async (
   symbol,
   side,
   quantity,
   stepPercentage,
-  debounceTime = 5000
+  roiTakeProfit,
+  roiBuyThreshold = null,
+  round,
+  aiThreshold,
+  debounceTime
 ) => {
   console.log(`Connecting WebSocket for ${symbol}...`);
-
   const wsUrl = "wss://stream.bybit.com/v5/public/linear";
-  const ws = new WebSocket(wsUrl);
 
-  let initialPrice = null;
-  let currentROI = 0;
+  const ws = new WebSocket(wsUrl);
+  let connection = await Connection.findOne({ symbol });
+  if (!connection) {
+    connection = new Connection({ symbol, initialPrice: null, buyCount: 0 });
+    await connection.save();
+  }
+  let { initialPrice } = connection;
+
+  let lastDatabaseCheckTime = 0; // זמן הבדיקה האחרון מה-Database
+  const databaseCheckInterval = 0.5 * 60 * 1000; // בדיקה כל 5 דקות (במילישניות)
+
+  const percentageThreshold = 0.3; // סף אחוזים להבדל
   let lastOrderTime = 0;
+  let isBusy = false;
+  const incrementPercent = 150; // אחוז ההגדלה (1.5%) בכל קנייה חוזרת
+
+  async function getBuyQuantity(initialQty, round = true) {
+    let updatedConnection = await Connection.findOne({ symbol });
+    let { buyCount } = updatedConnection;
+    const updatedQuantity = initialQty * (buyCount + 1);
+
+    updatedConnection.buyCount = updatedConnection.buyCount + 1;
+    await updatedConnection.save();
+
+    return round ? Math.ceil(updatedQuantity) : updatedQuantity;
+  }
 
   ws.on("open", () => {
     console.log(`WebSocket connected to ${wsUrl}`);
-
-    const subscribePayload = {
-      op: "subscribe",
-      args: [`tickers.${symbol}`],
-    };
-    ws.send(JSON.stringify(subscribePayload));
+    ws.send(JSON.stringify({ op: "subscribe", args: [`tickers.${symbol}`] }));
   });
 
   ws.on("message", async (message) => {
     try {
       const data = JSON.parse(message);
+      if (data.topic && data.topic.startsWith("tickers") && data.data) {
+        const lastPrice = parseFloat(data.data.lastPrice || 0);
+        if (!isNaN(lastPrice) && lastPrice > 0) {
+          if (initialPrice === null) {
+            initialPrice = lastPrice;
+            connection.initialPrice = initialPrice;
+            await connection.save();
+            console.log(`Initial price set to ${initialPrice}`);
+          }
 
-      // בדיקה שהמבנה של ההודעה תואם למה שנדרש
-      if (
-        data.topic &&
-        data.topic.startsWith("tickers") &&
-        data.data &&
-        Array.isArray(data.data) &&
-        data.data[0] &&
-        data.data[0].lastPrice
-      ) {
-        const tickerData = data.data[0];
-        const lastPrice = parseFloat(tickerData.lastPrice);
+          const now = Date.now();
 
-        if (!isNaN(lastPrice)) {
+          // בדוק אם יש צורך לבדוק עדכונים ב-Database
+          if (now - lastDatabaseCheckTime > databaseCheckInterval) {
+            const updatedConnection = await Connection.findOne({ symbol });
+            if (
+              updatedConnection &&
+              updatedConnection.initialPrice !== initialPrice
+            ) {
+              initialPrice = updatedConnection.initialPrice;
+              console.log(
+                `Initial price updated to ${symbol} from database: ${initialPrice}`
+              );
+            } else {
+              // console.log(`Successfully updated`);
+            }
+            lastDatabaseCheckTime = now; // עדכון זמן הבדיקה האחרון
+          }
+
+          if (initialPrice === null) {
+            initialPrice = lastPrice;
+            connection.initialPrice = initialPrice;
+            await connection.save();
+            console.log(`Initial price set to ${initialPrice}`);
+          }
+
+          if (connection.lastPrice) {
+            // חישוב ההבדל באחוזים בין המחירים
+            const priceDifferencePercentage =
+              Math.abs(
+                (lastPrice - connection.lastPrice) / connection.lastPrice
+              ) * 100;
+
+            // שמירת המחיר רק אם ההבדל גדול מסף האחוזים
+            if (priceDifferencePercentage > percentageThreshold) {
+              connection.lastPrice = lastPrice;
+              await connection.save();
+              console.log(
+                `Saved new price: ${lastPrice} | Change: ${priceDifferencePercentage.toFixed(
+                  2
+                )}%`
+              );
+            } else {
+              // console.log(
+              //   `Price difference (${priceDifferencePercentage.toFixed(
+              //     2
+              //   )}%) below threshold. Not saving.`
+              // );
+            }
+          } else {
+            // אם אין lastPrice שמור, נשמור את המחיר הנוכחי
+            connection.lastPrice = lastPrice;
+            await connection.save();
+            console.log(`${symbol} Saved last price: ${lastPrice}`);
+          }
           await processPrice(
             lastPrice,
             symbol,
             side,
             quantity,
             stepPercentage,
-            debounceTime
+            roiTakeProfit,
+            roiBuyThreshold,
+            null,
+            aiThreshold, // נשאיר את aiThreshold כאן
+            debounceTime,
+            initialPrice,
+            async (newPrice) => {
+              initialPrice = newPrice;
+              connection.initialPrice = initialPrice;
+              await connection.save();
+              console.log(`Initial price set to ${initialPrice}`);
+            },
+            () => isBusy,
+            (state) => {
+              isBusy = state;
+              console.log(`isBusy set to: ${state}`);
+            },
+            () => lastOrderTime,
+            (time) => {
+              lastOrderTime = time;
+              console.log(`Last order time updated to: ${time}`);
+            },
+            getBuyQuantity
           );
-        } else {
-          console.warn(`Invalid lastPrice: ${tickerData.lastPrice}`);
         }
-      } else {
-        console.warn("Unexpected WebSocket message format:", data);
       }
     } catch (error) {
       console.error("Error parsing WebSocket message:", error.message);
     }
   });
 
-  ws.on("error", (error) => {
-    console.error("WebSocket error:", error.message);
-  });
-
-  ws.on("close", () => {
+  ws.on("error", (error) => console.error(`WebSocket error: ${error.message}`));
+  ws.on("close", async () => {
     console.log(`WebSocket for ${symbol} closed.`);
-  });
-
-  const processPrice = async (
-    currentPrice,
-    symbol,
-    side,
-    quantity,
-    stepPercentage,
-    debounceTime
-  ) => {
-    if (!initialPrice) {
-      initialPrice = currentPrice;
-      console.log(`Initial price set to ${initialPrice}`);
-      return;
-    }
-
-    currentROI = ((currentPrice - initialPrice) / initialPrice) * 100;
-
-    console.log(
-      `Currency: ${symbol} Current price: ${currentPrice}, ROI: ${currentROI.toFixed(
-        2
-      )}%`
-    );
-
-    const now = Date.now();
-    if (
-      Math.abs(currentROI) >= stepPercentage &&
-      now - lastOrderTime >= debounceTime
-    ) {
-      console.log(
-        `ROI changed by ${stepPercentage}% - placing additional order.`
+    connection.isBusy = false;
+    await connection.save();
+    setTimeout(() => {
+      connectWebSocket(
+        symbol,
+        side,
+        quantity,
+        stepPercentage,
+        roiTakeProfit,
+        roiBuyThreshold,
+        round,
+        aiThreshold,
+        debounceTime
       );
-      const orderResponse = await placeOrder(symbol, side, quantity);
-
-      if (orderResponse && orderResponse.retCode === 0) {
-        console.log("Order placed successfully. Resetting ROI...");
-        initialPrice = currentPrice; // איפוס המחיר הראשוני
-        currentROI = 0; // איפוס ROI
-        lastOrderTime = now; // עדכון זמן ההזמנה האחרונה
-      } else {
-        console.warn("Order failed. Retrying on next ROI update.");
-      }
-    }
-  };
+    }, 5000); // התחבר מחדש לאחר 5 שניות
+  });
 };

@@ -1,0 +1,24 @@
+
+###############
+POST http://localhost:3002/takeProfit/aiDecision
+Content-Type: application/json
+
+{
+    "symbol": "BTCUSDT",
+    "category": "linear",
+    "currentPrice": 110000,
+    "initialPrice": 106000,
+    "positionSize": 55
+  }
+
+###############
+POST http://localhost:3002/takeProfit/startTakeProfit
+Content-Type: application/json
+
+{
+    "symbol": "BTCUSDT",
+    "category": "linear",
+    "roiTarget": 1,
+    "qtyToSell": "0.001",
+    "debounceTime": 28500
+  }

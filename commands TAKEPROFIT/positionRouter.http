@@ -1,0 +1,43 @@
+
+
+###############
+POST http://localhost:3002/position/startPosition
+Content-Type: application/json
+
+{
+  "symbol": "LINKUSDT",
+  "side": "Buy",
+  "quantity": "0.2",
+  "stepPercentage": 0.25,
+  "roiTakeProfit": 22, 
+  "roiBuyThreshold": null,
+  "useAI": true,
+  "aiThreshold": 3,
+  "debounceTime": 5000
+}
+
+###############
+POST http://localhost:3002/position/startPosition
+Content-Type: application/json
+
+{
+  "symbol": "DOTUSDT",
+  "side": "Buy",
+  "quantity": "0.6",
+  "stepPercentage": 0.25,
+  "roiTakeProfit": 22, 
+  "roiBuyThreshold": null,
+  "useAI": true,
+  "aiThreshold": 3,
+  "debounceTime": 5000
+}
+
+###############
+POST http://localhost:3002/position/processPrice
+Content-Type: application/json
+
+{
+
+}
+
+

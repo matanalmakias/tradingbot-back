@@ -12,6 +12,7 @@ import { dcaRouter } from "./routes/dca.js";
 import { positionRouter } from "./routes/position.js";
 import { rsiRouter } from "./routes/rsi.js";
 import { orderRouter } from "./routes/order.js";
+import { takeProfitRouter } from "./routes/takeProfitRouter.js";
 // Start the cron job
 const app = express();
 connect().catch((e) => {
@@ -38,10 +39,11 @@ app.use("/dca", dcaRouter);
 app.use("/position", positionRouter);
 app.use("/rsi", rsiRouter);
 app.use("/order", orderRouter);
+app.use("/takeProfit", takeProfitRouter);
 
 app.use(notFound);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 const server = app.listen(PORT, () =>
   console.log(`HTTP server running on port ${PORT}`)
 );

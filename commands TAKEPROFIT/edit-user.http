@@ -1,0 +1,18 @@
+
+#########
+PUT http://localhost:3001/user/edit
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjMyY2EyMTA2MmQxNjEzNTQ1NmY0ZSIsInBob25lIjoiMDUyNjc1NzcwNiIsImlhdCI6MTcwNjI1MTIxMiwiZXhwIjoxNzA4ODQzMjEyfQ.Ws9HdNm9hUfl3zVNwHBTQqXxD-FM7rRufkgLAYo59HY
+
+{
+        "name":"12345"
+}
+
+        # "desc":"asdasdasdas",
+        # "price":122,
+        # "imgUrls":["asdasdasdas"],
+        # "category":"asdasdas",
+        # "maxIngredients":2,
+        # "ingredients":["asdasd","asdasd"],
+        # "special" : { "isCase": false, "isHoliday": true, "isSale": false },
+        # "sizes":{ "small": 122, "medium": 123, "large": 124 }

@@ -1,43 +1,64 @@
 import { RestClientV5 } from "bybit-api";
 import dotenv from "dotenv";
+import { testnetValue } from "../utils/utils.js";
 dotenv.config();
-// יצירת לקוח Bybit
+
 const client = new RestClientV5({
-  testnet: false, // עבור Testnet שנה ל- false לפרודקשן
-  key: process.env.BYBIT_API_KEY, // מפתח ה-API שלך
-  secret: process.env.BYBIT_API_SECRET, // סוד ה-API שלך
+  testnet: testnetValue,
+  key: process.env.BYBIT_API_KEY,
+  secret: process.env.BYBIT_API_SECRET,
 });
 
-// פונקציה לביצוע פקודה
-export const placeOrder = async (symbol, side, quantity, price = null) => {
+export const placeOrder = async (
+  symbol,
+  side,
+  quantity,
+  simulation = false,
+  category = "linear",
+  orderType = "Market",
+  price = null,
+  positionIdx = 0,
+  timeInForce = "IOC",
+  reduceOnly = false,
+  closeOnTrigger = false
+) => {
+  if (simulation) {
+    console.log(
+      `[SIMULATION] Would place order: ${side} ${quantity} of ${symbol}`
+    );
+    return { success: true, message: "Simulation: Order placed." };
+  }
+
   try {
-    // בניית גוף הבקשה
-    const orderPayload = {
-      category: "linear", // קטגוריה למסחר בחוזים עתידיים
-      symbol, // מטבע (לדוגמה: BTCUSDT)
-      side, // כיוון המסחר ("Buy" או "Sell")
-      orderType: price ? "Limit" : "Market", // סוג הפקודה
-      qty: quantity.toString(), // כמות המסחר, חייבת להיות מחרוזת
-      timeInForce: "GoodTillCancel", // ברירת מחדל, אפשר לשנות
+    const params = {
+      category,
+      symbol,
+      side,
+      orderType,
+      qty: quantity.toString(), // ודא כי הכמות היא מחרוזת
+      timeInForce,
+      positionIdx,
+      reduceOnly,
+      closeOnTrigger,
     };
 
-    if (price) {
-      orderPayload.price = price.toFixed(2); // מחיר, אם מדובר בפקודת Limit
+    if (orderType === "Limit" && price) {
+      params.price = price.toString();
     }
 
-    // קריאה ל-API
-    const response = await client.submitOrder(orderPayload);
+    const response = await client.submitOrder(params);
 
-    // בדיקת תגובה
-    if (response.retCode !== 0) {
-      console.error(`Order failed: ${response.retMsg}`);
-      throw new Error(response.retMsg);
+    if (response.retCode === 0) {
+      console.log(
+        `Order placed successfully: ${side} ${quantity} of ${symbol}`
+      );
+      return response;
+    } else {
+      console.error(`Error placing order: ${response.retMsg}`);
+      return response;
     }
-
-    console.log("Order placed successfully:", response);
-    return response;
   } catch (error) {
     console.error("Error placing order:", error.message);
-    return null;
+    return { success: false, message: error.message };
   }
 };

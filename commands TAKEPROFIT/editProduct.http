@@ -1,0 +1,18 @@
+
+#########
+PUT http://localhost:3001/product/edit/65b33e80ca4fd828e232e067
+Content-Type: application/json
+
+{
+        "desc":"21312321312312312312312",
+        "name":"as222d1312312asdasdas"
+}
+
+        # "desc":"asdasdasdas",
+        # "price":122,
+        # "imgUrls":["asdasdasdas"],
+        # "category":"asdasdas",
+        # "maxIngredients":2,
+        # "ingredients":["asdasd","asdasd"],
+        # "special" : { "isCase": false, "isHoliday": true, "isSale": false },
+        # "sizes":{ "small": 122, "medium": 123, "large": 124 }

@@ -1,42 +1,48 @@
 export const calculateRSI2 = (closes, period = 14) => {
-  if (!closes || closes.length < period) {
+  if (!closes || closes.length <= period) {
     throw new Error(
-      `Not enough data to calculate RSI. Required: ${period}, Got: ${closes.length}`
+      `Not enough data to calculate RSI. Required: ${period + 1}, Got: ${
+        closes.length
+      }`
     );
   }
 
-  const gains = [];
-  const losses = [];
+  let gains = 0;
+  let losses = 0;
 
-  // חישוב שינויים בין סגירות
-  for (let i = 1; i < closes.length; i++) {
+  const rsi = [];
+
+  // שלב 1: חישוב רווחים והפסדים ראשוניים עבור התקופה הראשונה
+  for (let i = 1; i <= period; i++) {
     const change = closes[i] - closes[i - 1];
-    if (change >= 0) {
-      gains.push(change);
-      losses.push(0);
+    if (change > 0) {
+      gains += change;
     } else {
-      gains.push(0);
-      losses.push(Math.abs(change));
+      losses += Math.abs(change);
     }
   }
 
-  // ממוצעים ראשוניים של רווחים והפסדים
-  let avgGain =
-    gains.slice(0, period).reduce((sum, val) => sum + val, 0) / period;
-  let avgLoss =
-    losses.slice(0, period).reduce((sum, val) => sum + val, 0) / period;
+  let avgGain = gains / period;
+  let avgLoss = losses / period;
 
-  const rsi = [];
-  let rs = avgGain / avgLoss;
+  // חישוב RSI ראשון
+  const rs = avgGain / avgLoss;
   rsi.push(100 - 100 / (1 + rs));
 
-  // חישוב RSI עבור כל שאר התקופות
-  for (let i = period; i < gains.length; i++) {
-    avgGain = (avgGain * (period - 1) + gains[i]) / period;
-    avgLoss = (avgLoss * (period - 1) + losses[i]) / period;
+  // שלב 2: חישוב ממוצעים מתגלגלים (Smoothed Moving Average)
+  for (let i = period + 1; i < closes.length; i++) {
+    const change = closes[i] - closes[i - 1];
+    if (change > 0) {
+      avgGain = (avgGain * (period - 1) + change) / period;
+      avgLoss = (avgLoss * (period - 1)) / period;
+    } else {
+      avgLoss = (avgLoss * (period - 1) + Math.abs(change)) / period;
+      avgGain = (avgGain * (period - 1)) / period;
+    }
 
-    rs = avgGain / avgLoss;
-    rsi.push(100 - 100 / (1 + rs));
+    const rs = avgGain / avgLoss;
+    const currentRSI = 100 - 100 / (1 + rs);
+    rsi.push(currentRSI);
   }
 
   return rsi;

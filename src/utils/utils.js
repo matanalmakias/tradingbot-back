@@ -6,3 +6,4 @@ const phoneRegex = /^05[0-9]{8}$/;
 const passwordRegex = /^[a-zA-Z0-9_-]{6,16}$/;
 
 export { urlRegex, phoneRegex, passwordRegex };
+export const testnetValue = false;

@@ -1,12 +1,115 @@
 
+
 ###############
-POST http://localhost:3001/position/startPosition
+POST http://localhost:3002/position/startPosition
 Content-Type: application/json
 
 {
-  "symbol": "COWUSDT",
+  "symbol": "LINKUSDT",
   "side": "Buy",
-  "quantity": "0.5",
-  "stepPercentage": 0.5
+  "quantity": "0.6",
+  "stepPercentage": 0.35,
+  "roiTakeProfit": 22, 
+  "roiBuyThreshold": null,
+  "round": true,
+  "aiThreshold": 3,
+  "debounceTime": 5000
 }
+
+###############
+POST http://localhost:3002/position/startPosition
+Content-Type: application/json
+
+{
+  "symbol": "GRASSUSDT",
+  "side": "Buy",
+  "quantity": "2",
+  "stepPercentage": 0.3,
+  "roiTakeProfit": 22, 
+  "roiBuyThreshold": null,
+  "round": true,
+  "aiThreshold": 3,
+  "debounceTime": 5000
+}
+###############
+POST http://localhost:3002/position/startPosition
+Content-Type: application/json
+
+{
+  "symbol": "ADAUSDT",
+  "side": "Buy",
+  "quantity": "6",
+  "stepPercentage": 0.7,
+  "roiTakeProfit": 22, 
+  "roiBuyThreshold": null,
+  "round": true,
+  "aiThreshold": 3,
+  "debounceTime": 5000
+}
+
+###############
+POST http://localhost:3002/position/startPosition
+Content-Type: application/json
+
+{
+  "symbol": "POPCATUSDT",
+  "side": "Buy",
+  "quantity": "6",
+  "stepPercentage": 0.7,
+  "roiTakeProfit": 22, 
+  "roiBuyThreshold": null,
+  "round": true,
+  "aiThreshold": 3,
+  "debounceTime": 5000
+}
+
+###############
+POST http://localhost:3002/position/startPosition
+Content-Type: application/json
+
+{
+  "symbol": "SHIB1000USDT",
+    "side": "Buy",
+  "quantity": "210",
+  "stepPercentage": 0.7,
+  "roiTakeProfit": 22, 
+  "roiBuyThreshold": null,
+  "round": false,
+  "aiThreshold": 3,
+  "debounceTime": 5000
+}
+
+###############
+POST http://localhost:3002/position/startPosition
+Content-Type: application/json
+
+{
+  "symbol": "DOGEUSDT",
+  "side": "Buy",
+  "quantity": "15",
+  "stepPercentage": 0.7,
+  "roiTakeProfit": 22, 
+  "roiBuyThreshold": null,
+  "round": true,
+  "aiThreshold": 3,
+  "debounceTime": 5000
+}
+
+
+###############
+POST http://localhost:3002/position/startPosition
+Content-Type: application/json
+
+{
+  "symbol": "KASUSDT",
+  "side": "Buy",
+  "quantity": "50",
+  "stepPercentage": 0.7,
+  "roiTakeProfit": 22, 
+  "roiBuyThreshold": null,
+  "round": true,
+  "aiThreshold": 3,
+  "debounceTime": 5000
+}
+
 

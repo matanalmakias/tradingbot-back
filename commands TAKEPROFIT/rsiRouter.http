@@ -1,7 +1,7 @@
 ###############
-POST http://localhost:3001/rsi/getRSIForSymbols
+POST http://localhost:3003/rsi/getRSIForSymbols
 Content-Type: application/json
-
+SAD
 {
   "symbols": ["BTCUSDT", "ETHUSDT",
    "XRPUSDT","DOGEUSDT","ENAUSDT",
@@ -24,7 +24,7 @@ Content-Type: application/json
    "SEIUSDT",
    "EIGENUSDT",
    "ZROUSDT",
-   "XVGUSDT","NEARUSDT",
+   "XVGUSDT",
    "WIFUSDT",
    "VIRTUALUSDT","ENSUSDT",
    "POPCATUSDT",
@@ -34,7 +34,7 @@ Content-Type: application/json
    "STXUSDT","MOVEUSDT",
    "ORDIUSDT"
    ],
-  "period": 12,
-  "interval": 3
+  "period": 120,
+  "interval": 360
 }
 

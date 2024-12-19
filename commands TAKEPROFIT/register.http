@@ -1,0 +1,9 @@
+###########
+POST http://localhost:3001/user/register/2
+Content-Type: application/json
+
+    {
+        "phone":"0526757706",
+     "verificationCode":"120003"
+    }
+

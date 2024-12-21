@@ -34,7 +34,12 @@ export const connectWebSocket = async (
   async function getBuyQuantity(initialQty, round = true) {
     let updatedConnection = await Connection.findOne({ symbol });
     let { buyCount } = updatedConnection;
-    const updatedQuantity = initialQty * (buyCount + 1);
+    let updatedQuantity;
+    if (buyCount < 1) {
+      updatedQuantity = initialQty;
+    } else {
+      updatedQuantity = initialQty * (buyCount * 2); // buyCount + 1 כדי להכפיל לפי הסדר הנכון
+    }
 
     updatedConnection.buyCount = updatedConnection.buyCount + 1;
     await updatedConnection.save();
@@ -137,8 +142,6 @@ export const connectWebSocket = async (
             async (state) => {
               isBusy = state;
               console.log(`isBusy set to: ${state}`);
-              connection.isBusy = state;
-              await connection.save();
             },
             () => lastOrderTime,
             (time) => {

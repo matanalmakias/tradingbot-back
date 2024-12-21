@@ -1,9 +1,9 @@
 import WebSocket from "ws";
-import { placeOrder } from "../../routes/placeOrder.js";
 import dotenv from "dotenv";
 import { getPosition } from "../socket/getPosition.js";
 import { getAIDecision } from "../get/startPosition/getAIDecision.js";
 import { Connection } from "../../db/models/connection.js";
+import { placeOrder } from "../place-order/placeOrder.js";
 dotenv.config();
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -168,7 +168,7 @@ export const takeProfitStrategy = (
   ws.on("close", async () => {
     console.log(`WebSocket for Take Profit Strategy on ${symbol} closed.`);
     setTimeout(() => {
-      connectWebSocket(
+      takeProfitStrategy(
         symbol,
         category,
         roiTarget,

@@ -36,10 +36,10 @@ POST http://localhost:3002/position/startPosition
 Content-Type: application/json
 
 {
-  "symbol": "ADAUSDT",
+  "symbol": "XRPUSDT",
   "side": "Buy",
-  "quantity": "6",
-  "stepPercentage": 0.7,
+  "quantity": "3",
+  "stepPercentage": 1.5,
   "roiTakeProfit": 22, 
   "roiBuyThreshold": null,
   "round": true,
@@ -55,7 +55,7 @@ Content-Type: application/json
   "symbol": "POPCATUSDT",
   "side": "Buy",
   "quantity": "6",
-  "stepPercentage": 0.7,
+  "stepPercentage": 1,
   "roiTakeProfit": 22, 
   "roiBuyThreshold": null,
   "round": true,
@@ -70,8 +70,8 @@ Content-Type: application/json
 {
   "symbol": "SHIB1000USDT",
     "side": "Buy",
-  "quantity": "210",
-  "stepPercentage": 0.7,
+  "quantity": "260",
+  "stepPercentage": 1.8,
   "roiTakeProfit": 22, 
   "roiBuyThreshold": null,
   "round": false,
@@ -86,8 +86,8 @@ Content-Type: application/json
 {
   "symbol": "DOGEUSDT",
   "side": "Buy",
-  "quantity": "15",
-  "stepPercentage": 0.7,
+  "quantity": "18",
+  "stepPercentage": 2,
   "roiTakeProfit": 22, 
   "roiBuyThreshold": null,
   "round": true,
@@ -101,13 +101,13 @@ POST http://localhost:3002/position/startPosition
 Content-Type: application/json
 
 {
-  "symbol": "KASUSDT",
+  "symbol": "DOTUSDT",
   "side": "Buy",
-  "quantity": "50",
-  "stepPercentage": 0.7,
+  "quantity": "1.1",
+  "stepPercentage": 1.4,
   "roiTakeProfit": 22, 
   "roiBuyThreshold": null,
-  "round": true,
+  "round": false,
   "aiThreshold": 3,
   "debounceTime": 5000
 }

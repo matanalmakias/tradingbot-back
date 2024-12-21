@@ -1,5 +1,4 @@
-import { placeOrder } from "../../routes/placeOrder.js";
-import { getAIDecision } from "../get/startPosition/getAIDecision.js";
+import { placeOrder } from "../place-order/placeOrder";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
